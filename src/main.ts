@@ -166,8 +166,8 @@ function generateCTAHTML(): string {
 function generateFooterHTML(): string {
   return `
     <footer class="gsap-reveal" style="text-align: center; margin-top: var(--spacing-xl); padding-bottom: var(--spacing-md); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.9rem;">
-      <p>Diseñado para alto rendimiento • GSAP + Lenis</p>
-      <p style="margin-top: 0.5rem;">© ${new Date().getFullYear()} ${profileInfo.name}</p>
+      <p>~ $ echo "Desarrollado y desplegado por ${profileInfo.name}"</p>
+      <p style="margin-top: 0.5rem; opacity: 0.7;">100% Vanilla TypeScript • Alto Rendimiento</p>
     </footer>
   `;
 }
