@@ -5,14 +5,18 @@ export interface Skill {
 }
 
 export interface Project {
+  id: string;
   title: string;
-  category: string;
+  category: 'netdevops' | 'cloud' | 'iot' | 'software';
+  categoryLabel: string;
   description: string;
+  bulletPoints: string[];
   technologies: string[];
   link?: string;
-  demoUrl?: string;
+  topologyId?: string;
   status: string;
-  badgeType?: 'live' | 'production' | 'active' | 'iot';
+  badgeType: 'production' | 'live' | 'private' | 'active';
+  isPrivate?: boolean;
 }
 
 export interface Lab {
@@ -20,6 +24,7 @@ export interface Lab {
   category: string;
   description: string;
   technologies: string[];
+  topologyId?: string;
 }
 
 export interface SocialLink {
@@ -28,187 +33,320 @@ export interface SocialLink {
   icon: string;
 }
 
+export interface Certification {
+  title: string;
+  issuer: string;
+  code?: string;
+  year: string;
+}
+
 export const profileInfo = {
   name: "Uriel Aron Torres Salazar",
   role: "SysAdmin & NetDevOps Specialist",
-  headline: "Administración de Redes & Comunicaciones | Especialista en NetDevOps, Cloud Infrastructure e IoT",
-  about: "Especialista en formación en Administración de Redes y Comunicaciones por Tecsup. Mi enfoque une la infraestructura de red física y virtual con la programabilidad y desarrollo de software de alto impacto (NetDevOps). Con experiencia comprobada en la administración de servidores de alta disponibilidad (NYXCORE Homelab con 17 microservicios Docker y túneles Cloudflare Zero Trust), seguridad perimetral (Fortinet SD-WAN, Cisco, Aruba, AdGuard Home), automatización avanzada en Python (Netmiko, RESTCONF) y aplicaciones web modernas de alto rendimiento.",
-  education: "Tecsup (Administración de Redes y Comunicaciones)",
+  tagline: "Administrador de Redes, Infraestructura Cloud & Ciberseguridad",
+  headline: "Especialidad en Cisco Enterprise, Firewalls Fortinet, Servidores Linux, Cloudflare Zero Trust & IoT FreeRTOS.",
+  about: "Estudiante de últimos ciclos (VI Ciclo) de Administración de Redes y Comunicaciones en Tecsup (Mención en Virtualización y Seguridad Informática). Experiencia práctica comprobada en conmutación y enrutamiento con equipos Cisco Catalyst, políticas de ciberseguridad en firewalls Fortinet FortiGate, administración avanzada de servidores Linux Ubuntu y aseguramiento de aplicaciones perimetrales mediante Cloudflare Zero Trust. Diseñador de arquitecturas distribuidas de alta eficiencia que integran microcontroladores ESP32 con firmware FreeRTOS dual-core, telemetría MQTT y microservicios automatizados en Python y Docker.",
+  education: "Tecsup (Campus Arequipa) · VI Ciclo (Mención en Virtualización y Seguridad Informática)",
+  location: "Arequipa, Perú",
+  phone: "+51 930 171 820",
   email: "torressalazarurielaron@gmail.com",
-  status: "Disponible para proyectos & retos de infraestructura",
+  status: "Disponible para proyectos & roles NetDevOps / Infraestructura",
   collaboration: "Alto desempeño en trabajo en equipo multidisciplinario, diseño e implementación de topologías de red críticas, automatización idempotente de despliegues y resolución proactiva de incidentes bajo metodologías ágiles."
 };
+
+export const certificationsData: Certification[] = [
+  {
+    title: "Python: Programación & Automatización de Redes",
+    issuer: "Certificación Especializada",
+    year: "2025"
+  },
+  {
+    title: "Cisco CCNA: Enterprise Routing & Switching",
+    issuer: "En preparación activa (Próxima certificación)",
+    year: "2026"
+  },
+  {
+    title: "Liderazgo y Gestión de Carrera",
+    issuer: "Tecsup PCC",
+    code: "Cert. AQP/PCC/25/1280",
+    year: "2024"
+  },
+  {
+    title: "Competencias Blandas I",
+    issuer: "Tecsup PCC",
+    code: "Cert. AQP/PCC/24/4202",
+    year: "2024"
+  }
+];
 
 export const socialLinks: SocialLink[] = [
   { name: "LinkedIn", url: "https://www.linkedin.com/in/nyxthorn", icon: "in" },
   { name: "GitHub", url: "https://github.com/xllnyxthornllx", icon: "gh" },
   { name: "Email", url: "mailto:torressalazarurielaron@gmail.com", icon: "mail" },
-  { name: "NYXCORE Cloud", url: "https://nyxcore.online", icon: "cloud" }
+  { name: "Descargar CV", url: "/CV_Uriel_Torres_Salazar.pdf", icon: "cv" }
+];
+
+export const filterCategories = [
+  { id: 'all', label: 'Todos los Proyectos' },
+  { id: 'netdevops', label: 'NetDevOps & Cisco' },
+  { id: 'cloud', label: 'Cloud & Servidores' },
+  { id: 'iot', label: 'IoT & FreeRTOS' },
+  { id: 'software', label: 'Software & PWA' }
+];
+
+export const projectsData: Project[] = [
+  {
+    id: "cupora",
+    title: "Cupora — Plataforma PWA Interurbana & Aforo en Tiempo Real",
+    category: "software",
+    categoryLabel: "Software & PWA",
+    description: "Plataforma integral PWA de circuito cerrado para reserva de butacas, control de aforo y despacho de minivanes interurbanas en Perú (Renault Master, Mercedes-Benz Sprinter, Toyota HiAce).",
+    bulletPoints: [
+      "Constructor interactivo de carrocerías vehiculares con alineación magnética y pasadizos realistas.",
+      "Escáner de boletos QR con cámara funcionando 100% offline para tramos de carretera sin internet.",
+      "Checkout móvil con códigos QR de Yape y Plin con confirmación de operación y cajón de boletos activos.",
+      "Bus de sincronización reactiva BroadcastChannel API para actualización multi-rol en tiempo real sin backend pesado."
+    ],
+    technologies: ["React 18", "TypeScript", "Tailwind CSS", "PWA Offline", "BroadcastChannel", "QR Engine"],
+    link: "https://github.com/xllnyxthornllx/Cupora",
+    status: "Producción PWA",
+    badgeType: "production"
+  },
+  {
+    id: "aida-iot",
+    title: "Plataforma IoT & Servidor Cloud AIDA+",
+    category: "iot",
+    categoryLabel: "IoT & Firmware FreeRTOS",
+    description: "Ecosistema de infraestructura telemétrica de alta concurrencia que conecta nodos microcontroladores remotos con un servidor cloud blindado.",
+    bulletPoints: [
+      "Firmware Dual-Core sobre FreeRTOS: Core 0 dedicado a la pila de red MQTT y Core 1 a la adquisición de sensores (DHT22, GPS) mediante colas inter-hilo xQueue (cero congelamientos ante latencia).",
+      "Broker Mosquitto MQTT con puertos 1883 TCP y 9001 WebSockets protegidos con autenticación y ACLs.",
+      "Servidor Linux Ubuntu Server en VPS KVM con firewall UFW y túneles cifrados salientes Cloudflare Zero Trust.",
+      "Orquestación de flujos reactivos en Node-RED y persistencia de telemetría en MariaDB."
+    ],
+    technologies: ["ESP32 FreeRTOS", "Mosquitto MQTT", "Node-RED", "Cloudflare Zero Trust", "Ubuntu Server", "MariaDB"],
+    link: "https://github.com/xllnyxthornllx/Aethermqtt-web",
+    topologyId: "aida-iot",
+    status: "Activo / Desplegado",
+    badgeType: "live"
+  },
+  {
+    id: "cisco-enterprise",
+    title: "Infraestructura de Redes Enterprise & Ciberseguridad Perimetral",
+    category: "netdevops",
+    categoryLabel: "NetDevOps & Cisco",
+    description: "Diseño, conmutación y securización perimetral de campus corporativo con equipamiento Cisco Catalyst y firewalls Fortinet FortiGate de última generación.",
+    bulletPoints: [
+      "Configuración de switches Cisco Catalyst 9200L y 9300L con segmentación estricta por VLANs 802.1Q y enlaces troncales redundantes.",
+      "Enrutamiento dinámico corporativo mediante OSPF multi-área con inter-VLAN routing de alta velocidad.",
+      "Seguridad perimetral con Fortinet FortiGate: inspección de paquetes, traducción de direcciones NAT y filtrado de amenazas.",
+      "Despliegue wireless empresarial gestionado por UniFi Wireless Controller con autenticación 802.1X / WPA3 Enterprise."
+    ],
+    technologies: ["Cisco Catalyst 9300L/9200L", "OSPF Multi-área", "VLANs 802.1Q", "Fortinet FortiGate", "WPA3 Enterprise", "UniFi"],
+    topologyId: "cisco-enterprise",
+    status: "Validado en Lab",
+    badgeType: "live"
+  },
+  {
+    id: "firetext-audit",
+    title: "FireText — Auditoría de Red & Monitoreo Automatizado",
+    category: "cloud",
+    categoryLabel: "Cloud & Servidores",
+    description: "Arquitectura backend modular orientada a la seguridad perimetral, escaneo preventivo de infraestructura y trazabilidad de eventos críticos.",
+    bulletPoints: [
+      "Servicio backend continuo en Python (FastAPI/Flask) ejecutado como daemon systemd para monitoreo de hosts y escaneo de puertos.",
+      "Autorización multi-factor (2FA/OTP): acciones críticas requieren verificación mediante bot integrado en Discord con OTPs seguros.",
+      "Soporte nativo para conectividad en redes IPv6-only mediante síntesis DNS64.",
+      "Automatización de copias de seguridad periódicas cifradas hacia almacenamiento en la nube utilizando Rclone."
+    ],
+    technologies: ["Python FastAPI", "systemd Daemon", "Discord 2FA/OTP", "IPv6 / DNS64", "Rclone Cifrado", "JSONL"],
+    status: "Servicio Daemon",
+    badgeType: "live"
+  },
+  {
+    id: "homelab-case-study",
+    title: "Caso de Estudio: Homelab Privado & Edge Cluster Resiliente",
+    category: "cloud",
+    categoryLabel: "Cloud & Servidores",
+    description: "Arquitectura de infraestructura doméstica de alta resiliencia diseñada como banco de pruebas para microservicios y servicios esenciales autoalojados.",
+    bulletPoints: [
+      "Servidor físico Ubuntu Server 26.04 con 17 microservicios contenerizados en Docker con límites rotativos de logs.",
+      "Optimización de kernel con ZRAM (1.9 GB comprimido con zstd en RAM, vm.swappiness=100) previniendo desgaste de SSD.",
+      "Acceso perimetral seguro mediante Cloudflare Zero Trust Tunnels (cero puertos expuestos hacia internet).",
+      "Red de malla cifrada WireGuard sobre protocolo Tailscale y DNS sinkhole AdGuard Home con DoH/DoT upstream."
+    ],
+    technologies: ["Ubuntu Server 26.04", "Docker Compose (17 Contenedores)", "Cloudflare Zero Trust", "Tailscale WireGuard", "ZRAM Tuning", "AdGuard Home"],
+    topologyId: "homelab-cluster",
+    status: "🔒 Caso de Estudio Privado",
+    badgeType: "private",
+    isPrivate: true
+  },
+  {
+    id: "netdevops-pipeline",
+    title: "Automatización NetDevOps & Pipelines CI/CD",
+    category: "netdevops",
+    categoryLabel: "NetDevOps & Cisco",
+    description: "Pipeline programable en Python para auditorías masivas de configuración de red, rotación segura de credenciales y cambios idempotentes.",
+    bulletPoints: [
+      "Scripts de automatización con Netmiko y Paramiko para orquestación sin intervención manual sobre equipamiento Cisco IOS.",
+      "Consumo de APIs RESTCONF para telemetría estructurada en JSON y validación de tablas de enrutamiento.",
+      "Validación continua de topologías de red en pipelines de GitHub Actions con simulaciones automatizadas.",
+      "Despliegues controlados con rollback de seguridad ante fallas de enlace o políticas de acceso."
+    ],
+    technologies: ["Python", "Netmiko", "RESTCONF", "Cisco IOS", "GitHub Actions CI", "Bash"],
+    link: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
+    status: "CI/CD Pipeline",
+    badgeType: "active"
+  }
+];
+
+export const labsData: Lab[] = [
+  {
+    title: "Integración SD-WAN Multi-Sitio & Firewall Perimetral",
+    category: "Ciberseguridad Perimetral",
+    description: "Diseño e implementación de FortiGate SD-WAN con balanceo dinámico de enlaces WAN, políticas de inspección SSL/TLS, reglas de filtrado perimetral y túneles IPsec seguros en topología multisede.",
+    technologies: ["Fortinet", "FortiGate", "SD-WAN", "IPsec VPN", "NAT/PAT"],
+    topologyId: "cisco-enterprise"
+  },
+  {
+    title: "Controladores Inalámbricos Aruba & Seguridad WLAN",
+    category: "Infraestructura Inalámbrica",
+    description: "Configuración integral de Aruba Mobility Controllers, políticas de autenticación empresarial 802.1X / WPA3, segmentación de tráfico por VLANs y optimización de perfiles de radiofrecuencia (RF).",
+    technologies: ["Aruba Networks", "Mobility Controller", "802.1X", "WPA3", "VLANs"]
+  },
+  {
+    title: "Supervisión Industrial & PLC Allen-Bradley",
+    category: "Automatización Industrial",
+    description: "Diseño y simulación de rutinas ladder para supervisión de procesos industriales en controladores Allen-Bradley L24ER (Studio 5000 / LogixPro) con interbloqueos de seguridad e indicadores SCADA.",
+    technologies: ["Allen-Bradley", "Rockwell L24ER", "Studio 5000", "LogixPro", "Ladder Logic"]
+  },
+  {
+    title: "Laboratorios Virtualizados de Alta Fidelidad",
+    category: "Virtualización",
+    description: "Construcción y orquestación de escenarios corporativos redundantes en VMware Workstation / ESXi y WSL2, simulando infraestructuras híbridas con alta disponibilidad.",
+    technologies: ["VMware ESXi", "WSL2", "Linux Ubuntu Server", "Packet Tracer", "GNS3"]
+  }
 ];
 
 export const skillsData: Skill[] = [
   {
-    category: "Networking & Seguridad",
+    category: "Redes & Conectividad",
     icon: "📡",
     items: [
-      { name: "Cisco Enterprise", detail: "Routing, Switching, STP, OSPF, VLANs, Trunking y Hardening" },
-      { name: "Fortinet FortiGate", detail: "Firewalls Next-Gen, túneles IPsec, SD-WAN y políticas perimetrales" },
-      { name: "Aruba Networks", detail: "Mobility Controllers, despliegue WLAN y autenticación 802.1X / WPA3" },
-      { name: "Zero Trust & VPN", detail: "Cloudflare Tunnels, WireGuard, Tailscale Mesh y AdGuard Home DNS sinkhole" }
+      { name: "Cisco Catalyst (9200L/9300L)", detail: "CCNA Routing & Switching, VLANs 802.1Q, Trunking, Spanning Tree (RSTP)" },
+      { name: "Enrutamiento Dinámico", detail: "OSPF multi-área, inter-VLAN routing, ACLs estándar y extendidas, DHCP snooping" },
+      { name: "Wireless Corporativo", detail: "UniFi Wireless Controller, Aruba Mobility Controllers, WPA2/WPA3 Enterprise" },
+      { name: "Videovigilancia IP", detail: "Segmentación de cámaras IP, PoE 802.3af/at y aislamiento perimetral" }
+    ]
+  },
+  {
+    category: "Cloud, Servidores & Seguridad",
+    icon: "🛡️",
+    items: [
+      { name: "Linux Server (Ubuntu 24.04/26.04)", detail: "Kernel tuning, gestión de storage LVM, administración systemd y ZRAM zstd" },
+      { name: "Cloudflare Zero Trust", detail: "Túneles cifrados salientes, Anycast Edge, políticas de acceso sin abrir puertos" },
+      { name: "Fortinet FortiGate", detail: "Firewalls Next-Gen, túneles IPsec, SD-WAN, NAT/PAT y políticas perimetrales" },
+      { name: "Docker & Seguridad", detail: "Contenerización modular, límites rotativos de logs, firewall UFW y llaves SSH Ed25519" }
     ]
   },
   {
     category: "Automatización & NetDevOps",
     icon: "⚡",
     items: [
-      { name: "Python Network Eng.", detail: "Automatización masiva con Netmiko, Paramiko, RESTCONF y consumo de APIs" },
-      { name: "Bash & Linux Scripting", detail: "Orquestación de servicios, cron jobs de respaldo y gestión de storage LVM" },
-      { name: "Docker & Contenedores", detail: "Ecosistema de 17 contenedores, límites rotativos de logs y redes puente seguras" },
-      { name: "CI / CD & Git", detail: "Control de versiones, pipelines de validación y automatización de despliegues" }
+      { name: "Python Network Eng.", detail: "FastAPI, Flask, Netmiko, Paramiko, RESTCONF y consumo estructurado de APIs" },
+      { name: "Scripting de Sistemas", detail: "Bash y PowerShell para orquestación de servidores, auditoría JSONL y tareas cron" },
+      { name: "Control de Versiones & CI", detail: "Git / GitHub, workflows de automatización CI/CD y Rclone Automation" },
+      { name: "Autorización 2FA / OTP", detail: "Integración de verificación en 2 pasos mediante bots de Discord para operaciones críticas" }
     ]
   },
   {
-    category: "Sistemas & Cloud Homelab",
-    icon: "🖥️",
-    items: [
-      { name: "Ubuntu Server & Pro", detail: "Kernel tuning (Linux 6.x/7.x), optimización ZRAM zstd en RAM y gestión UFW" },
-      { name: "Virtualización", detail: "Topologías complejas en VMware Workstation / ESXi, WSL2 y emuladores" },
-      { name: "Observabilidad & Monitoreo", detail: "Uptime Kuma, Dozzle, Portainer, Glances y telemetría de recursos en vivo" },
-      { name: "Almacenamiento & Respaldo", detail: "Particionado GPT / SSD Kingston / LVM HDD 1.8 TB y backups automatizados" }
-    ]
-  },
-  {
-    category: "IoT & Automatización Industrial",
+    category: "IoT, Hardware & Protocolos",
     icon: "🤖",
     items: [
-      { name: "ESP32 & Microcontroladores", detail: "Lectura de sensores I2C/SPI, actuadores y transmisión telemétrica" },
-      { name: "Protocolos MQTT", detail: "Broker Mosquitto sobre TCP y WebSockets con cifrado y autenticación" },
-      { name: "Node-RED & SCADA", detail: "Flujos de control reactivo, automatización de riego y paneles en tiempo real" },
-      { name: "PLC Industrial", detail: "Lógica de contactos Ladder en Allen-Bradley L24ER (Studio 5000 / LogixPro)" }
+      { name: "ESP32 Dual-Core (FreeRTOS)", detail: "Firmware C/C++ en PlatformIO, colas inter-hilo xQueue, tareas en Core 0 y Core 1" },
+      { name: "Broker Mosquitto MQTT", detail: "Conexiones seguras TCP 1883 y WebSockets 9001, autenticación y listas ACLs" },
+      { name: "Node-RED & SCADA", detail: "Orquestación de flujos reactivos, telemetría de sensores DHT22/GPS y control" },
+      { name: "Bases de Datos Telemétricas", detail: "MariaDB, SQLite FTS5 y almacenamiento estructurado de logs de red" }
     ]
   },
   {
-    category: "Desarrollo Web & Frontend",
+    category: "Desarrollo Frontend & Web",
     icon: "🚀",
     items: [
-      { name: "TypeScript & React 18", detail: "Arquitecturas SPA, componentes modulares, hooks y tipado estricto" },
-      { name: "Tailwind CSS & Vite", detail: "Diseño UI responsivo, utilidades de rendimiento y bundlers ultrarrápidos" },
+      { name: "TypeScript & React 18", detail: "Arquitecturas SPA modulares, hooks personalizados y tipado estricto" },
+      { name: "Tailwind CSS & Vite", detail: "Interfaces web responsivas de alto rendimiento, compilación instantánea" },
       { name: "PWA & Offline Ready", detail: "Service Workers, IndexedDB, manifiestos móviles y cámaras QR offline" },
-      { name: "Web Audio & DSP", detail: "Procesamiento de audio digital dual-deck, Web Audio API y animación GSAP" }
+      { name: "Web Audio & DSP", detail: "Procesamiento digital de señales dual-deck y animaciones GSAP 3 con Lenis scroll" }
     ]
-  }
-];
-
-export const labsData: Lab[] = [
-  {
-    title: "NYXCORE — Servidor Físico Doméstico & 17 Contenedores",
-    category: "Cloud Homelab & Edge",
-    description: "Servidor Ubuntu Server 26.04 con optimización de memoria ZRAM (zstd comprimido en RAM), 17 contenedores Docker activos, túnel Cloudflare Zero Trust bajo dominio nyxcore.online y VPN WireGuard/Tailscale.",
-    technologies: ["Ubuntu Server 26.04", "Docker", "Cloudflare Zero Trust", "Tailscale", "ZRAM", "AdGuard"]
-  },
-  {
-    title: "Integración SD-WAN Multi-Sitio & Firewall Perimetral",
-    category: "Seguridad Perimetral",
-    description: "Diseño e implementación de FortiGate SD-WAN con balanceo dinámico de enlaces, políticas estrictas de firewall perimetral, optimización de tráfico y túneles IPsec seguros en entornos multisede.",
-    technologies: ["Fortinet", "FortiGate", "SD-WAN", "IPsec", "Firewall"]
-  },
-  {
-    title: "Automatización de Redes con Python & RESTCONF",
-    category: "NetDevOps",
-    description: "Desarrollo de scripts de auditoría y configuración idempotente masiva para routers y switches Cisco. Automatización de rotación de contraseñas, telemetría y consultas programáticas con Netmiko y RESTCONF.",
-    technologies: ["Python", "Netmiko", "RESTCONF", "Cisco IOS", "Automation"]
-  },
-  {
-    title: "Controladores Inalámbricos Aruba & Seguridad WLAN",
-    category: "Infraestructura Inalámbrica",
-    description: "Configuración integral de Aruba Mobility Controllers, políticas de autenticación empresarial 802.1X / WPA3, segmentación de tráfico por VLANs y optimización de cobertura de radiofrecuencia (RF).",
-    technologies: ["Aruba", "Mobility Controller", "802.1X", "WPA3", "VLANs"]
-  },
-  {
-    title: "Supervisión Industrial & PLC Allen-Bradley",
-    category: "Automatización Industrial",
-    description: "Diseño y simulación de rutinas ladder para supervisión de procesos automatizados con controladores Allen-Bradley L24ER (Studio 5000 / LogixPro) con interbloqueos de seguridad.",
-    technologies: ["Allen-Bradley", "Rockwell L24ER", "Studio 5000", "LogixPro", "Ladder"]
-  },
-  {
-    title: "Topologías Virtualizadas de Alta Fidelidad",
-    category: "Virtualización",
-    description: "Construcción y orquestación de laboratorios complejos de redes de computadoras mediante VMware Workstation/ESXi y WSL2, simulando entornos de producción corporativos con conmutación redundante.",
-    technologies: ["VMware", "WSL2", "Linux Enterprise", "Packet Tracer", "GNS3"]
-  }
-];
-
-export const projectsData: Project[] = [
-  {
-    title: "Cupora — Plataforma Interurbana & Aforo en Tiempo Real",
-    category: "Full-Stack PWA / React",
-    description: "Plataforma web PWA para reserva de butacas, venta en ventanilla y despacho de minivanes interurbanas en Perú. Incluye constructor interactivo de carrocerías con alineación magnética, escáner de boletos QR 100% offline con cámara, checkout con Yape/Plin y bus de sincronización reactiva BroadcastChannel.",
-    technologies: ["React 18", "TypeScript", "Tailwind CSS", "PWA", "BroadcastChannel", "QR Engine"],
-    link: "https://github.com/xllnyxthornllx/Cupora",
-    demoUrl: "https://github.com/xllnyxthornllx/Cupora",
-    status: "Producción",
-    badgeType: "production"
-  },
-  {
-    title: "NYXCORE — Homelab & Cluster Zero Trust",
-    category: "Infraestructura & Cloud",
-    description: "Servidor doméstico de alta resiliencia bajo dominio propio (nyxcore.online). Alberga 17 microservicios Docker, ZRAM en RAM para cuadruplicar la capacidad efectiva sin desgaste de SSD, túneles Cloudflare Zero Trust sin puertos expuestos a internet y DNS sinkhole perimetral AdGuard Home con DoH/DoT.",
-    technologies: ["Ubuntu Server 26.04", "Docker", "Cloudflare Zero Trust", "Tailscale", "ZRAM", "AdGuard Home"],
-    link: "https://nyxcore.online",
-    demoUrl: "https://nyxcore.online",
-    status: "Online (17 Contenedores)",
-    badgeType: "live"
-  },
-  {
-    title: "NYXCORE Autonomous AI DJ 8.0 & Web Audio DSP",
-    category: "Web Audio DSP & AI",
-    description: "Sistema de streaming y mezcla autónoma con arquitectura Web Audio DSP dual-deck. Incorpora análisis armónico en tiempo real (Rueda de Camelot + BPM), 7 técnicas de transición profesional (Bass Swap, High-Pass Sweep, Vinyl Brake), visualizador 3D reactivo a 60 FPS y locuciones neuronales con IA DJ Elvira.",
-    technologies: ["Web Audio API", "DSP Dual-Deck", "TypeScript", "Docker", "Neural TTS", "Camelot Wheel"],
-    link: "https://iot.nyxcore.online/dj/",
-    demoUrl: "https://iot.nyxcore.online/dj/",
-    status: "Live DSP",
-    badgeType: "live"
-  },
-  {
-    title: "PetFeeder-IoT & Invernadero Inteligente (SCADA)",
-    category: "IoT & Telemetría",
-    description: "Sistema de dispensación automatizada y telemetría ambiental para agricultura/invernaderos con microcontroladores ESP32, broker MQTT Mosquitto sobre TCP y WebSockets, motor de automatización reactiva en Node-RED y visualización en tiempo real.",
-    technologies: ["ESP32", "MQTT / Mosquitto", "Node-RED", "Sensores I2C", "WebSockets"],
-    link: "https://github.com/xllnyxthornllx/Aethermqtt-web",
-    demoUrl: "https://github.com/xllnyxthornllx/Aethermqtt-web",
-    status: "Online",
-    badgeType: "iot"
-  },
-  {
-    title: "Automatización de Infraestructura & NetDevOps Pipeline",
-    category: "NetDevOps & Python",
-    description: "Suite programable en Python para auditoría masiva de configuraciones de red, cambio seguro de contraseñas de switches y routers Cisco mediante Netmiko, telemetría y aprovisionamiento dinámico con APIs RESTCONF y pipelines de validación CI.",
-    technologies: ["Python", "RESTCONF", "Netmiko", "Cisco IOS", "Fortinet", "CI/CD"],
-    link: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
-    demoUrl: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
-    status: "Activo",
-    badgeType: "active"
   }
 ];
 
 export const toolsMarquee = [
-  "Cisco Enterprise",
-  "Fortinet SD-WAN",
+  "Cisco Catalyst 9300L",
+  "Fortinet FortiGate",
   "Python NetDevOps",
-  "Docker Containers",
   "Cloudflare Zero Trust",
+  "Docker Containers",
+  "ESP32 FreeRTOS",
+  "Mosquitto MQTT",
   "Tailscale WireGuard",
-  "Ubuntu Server 26.04",
-  "TypeScript",
-  "React 18",
-  "ESP32 IoT",
-  "MQTT Mosquitto",
+  "Ubuntu Server",
+  "React 18 & TypeScript",
   "Node-RED SCADA",
   "Netmiko Automation",
   "RESTCONF APIs",
   "Aruba Wireless",
-  "Allen-Bradley PLC",
+  "OSPF Routing",
   "ZRAM Kernel Tuning",
   "AdGuard Home DNS",
+  "Allen-Bradley PLC",
   "Git & GitHub CI"
 ];
+
+export const pythonSnippetCode = `# ================================================================
+# NetDevOps Automation: Auditoria Idempotente y Despliegue Cisco
+# Autor: Uriel Aron Torres Salazar (NetDevOps Specialist)
+# ================================================================
+import json
+import logging
+from netmiko import ConnectHandler
+import requests
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+
+DEVICE_INVENTORY = [
+    {
+        "device_type": "cisco_ios",
+        "host": "10.10.10.2",
+        "username": "netadmin",
+        "use_keys": True,
+        "key_file": "~/.ssh/id_ed25519",
+        "secret": "EnableSecretSecured"
+    }
+]
+
+def audit_vlan_integrity(net_connect, required_vlans=[10, 20, 30, 99]):
+    """Verifica idempotentemente la presencia de VLANs corporativas"""
+    output = net_connect.send_command("show vlan brief", use_genie=True)
+    existing_vlans = [int(vlan_id) for vlan_id in output.get("vlans", {}).keys()]
+    
+    missing_vlans = [v for v in required_vlans if v not in existing_vlans]
+    if missing_vlans:
+        logging.warning(f"VLANs faltantes detectadas: {missing_vlans}. Aprovisionando...")
+        commands = [f"vlan {v}\\n name AUTO_PROVISIONED_{v}" for v in missing_vlans]
+        net_connect.send_config_set(commands)
+        net_connect.save_config()
+        logging.info("VLANs creadas exitosamente y configuracion guardada.")
+    else:
+        logging.info("Auditoria de VLANs completa: Topologia 100% conforme.")
+
+def fetch_restconf_interfaces(switch_ip, auth_headers):
+    """Consulta estado de interfaces mediante API RESTCONF nativa (YANG/JSON)"""
+    url = f"https://{switch_ip}:443/restconf/data/ietf-interfaces:interfaces-state"
+    response = requests.get(url, headers=auth_headers, verify=False, timeout=5)
+    if response.status_code == 200:
+        telemetry = response.json()
+        logging.info(f"Interfaces activas recuperadas: {len(telemetry['ietf-interfaces:interfaces-state']['interface'])}")
+        return telemetry
+    return None
+`;
