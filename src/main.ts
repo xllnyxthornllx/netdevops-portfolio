@@ -16,6 +16,8 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
+let lenisInstance: Lenis | null = null;
+
 // Función auxiliar para texto en spans
 function splitTextIntoSpans(text: string): string {
   return text.split('').map(char => {
@@ -40,9 +42,34 @@ function getIconSVG(name: string): string {
   return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
 }
 
+function generateNavbarHTML(): string {
+  return `
+    <nav class="glass-navbar gsap-hero-element" id="navbar">
+      <div class="nav-brand nav-scroll-link interactive-element" data-target="top">
+        <span class="brand-prompt">~/$</span>
+        <span class="brand-name">uriel.torres</span>
+      </div>
+
+      <div class="nav-links">
+        <button class="nav-link nav-scroll-link interactive-element" data-target="proyectos">Proyectos</button>
+        <button class="nav-link nav-scroll-link interactive-element" data-target="laboratorios">Laboratorios</button>
+        <button class="nav-link nav-scroll-link interactive-element" data-target="habilidades">Habilidades</button>
+        <button class="nav-link nav-scroll-link interactive-element" data-target="contacto">Contacto</button>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/CV_Uriel_Torres_Salazar.pdf" download="CV_Uriel_Torres_Salazar.pdf" class="nav-cv-btn interactive-element" title="Descargar CV en PDF">
+          ${getIconSVG('Descargar CV')}
+          <span>CV</span>
+        </a>
+      </div>
+    </nav>
+  `;
+}
+
 function generateHeroHTML(): string {
   return `
-    <header class="gsap-hero-section">
+    <header class="gsap-hero-section" id="top">
       <div class="hero-top-badges gsap-hero-element">
         <span class="hero-greeting">${profileInfo.role}</span>
         <span class="status-indicator availability-pill">
@@ -94,13 +121,19 @@ function generateHeroHTML(): string {
       </div>
     </header>
 
-    <!-- Floating Contact Button -->
-    <button class="fixed-contact-btn hablemos-btn interactive-element gsap-reveal" aria-label="Copiar Correo de Contacto" title="Copiar correo: ${profileInfo.email}">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-        <polyline points="22,6 12,13 2,6"></polyline>
-      </svg>
-    </button>
+    <!-- Floating Buttons (Right Side) -->
+    <div class="floating-controls gsap-reveal">
+      <button class="floating-btn scroll-top-btn interactive-element" id="scroll-top-btn" aria-label="Volver arriba" title="Volver al inicio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+      </button>
+
+      <button class="fixed-contact-btn hablemos-btn interactive-element" aria-label="Copiar Correo de Contacto" title="Copiar correo: ${profileInfo.email}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </button>
+    </div>
   `;
 }
 
@@ -114,7 +147,6 @@ function generateProjectsHTML(): string {
   const projectsCards = projectsData.map(project => {
     const badgeClass = project.badgeType ? `status-${project.badgeType}` : '';
 
-    // Action buttons
     let actionButtons = '';
     if (project.topologyId) {
       actionButtons += `
@@ -174,7 +206,6 @@ function generateProjectsHTML(): string {
         <h2 class="section-title">Proyectos Destacados</h2>
         <p class="section-subtitle">Arquitecturas corporativas de red, automatización idempotente, microcontroladores FreeRTOS y plataformas PWA de alto impacto.</p>
         
-        <!-- Categorías de Filtrado -->
         <div class="filter-tabs-container">
           ${filterButtonsHTML}
         </div>
@@ -263,7 +294,6 @@ function generateSkillsHTML(): string {
   `).join('');
 
   const marqueeItems = toolsMarquee.map(tool => `<div class="marquee-item">${tool}</div>`).join('');
-  const marqueeDouble = marqueeItems + marqueeItems; 
 
   return `
     <section id="habilidades">
@@ -273,11 +303,9 @@ function generateSkillsHTML(): string {
       </div>
       
       <div class="marquee-container gsap-reveal">
-        <div class="marquee-content">
-          ${marqueeDouble}
-        </div>
-        <div class="marquee-content" aria-hidden="true">
-          ${marqueeDouble}
+        <div class="marquee-track">
+          <div class="marquee-content">${marqueeItems}</div>
+          <div class="marquee-content" aria-hidden="true">${marqueeItems}</div>
         </div>
       </div>
 
@@ -285,7 +313,6 @@ function generateSkillsHTML(): string {
         ${skillsCards}
       </div>
 
-      <!-- Certificaciones & Formación -->
       <div class="certifications-box gsap-reveal">
         <h3 class="cert-heading">🎓 Certificaciones & Reconocimientos</h3>
         <div class="cert-grid">
@@ -323,7 +350,7 @@ function generateCTAHTML(): string {
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
             <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
-          <span>${profileInfo.email}</span>
+          <span class="email-display-text">${profileInfo.email}</span>
           <span class="copy-badge">COPIAR</span>
         </div>
       </div>
@@ -377,6 +404,7 @@ function initApp() {
   if (!appElement) return;
 
   appElement.innerHTML = `
+    ${generateNavbarHTML()}
     <div class="container">
       ${generateHeroHTML()}
       ${generateProjectsHTML()}
@@ -386,6 +414,9 @@ function initApp() {
       ${generateFooterHTML()}
     </div>
     ${generateModalHTML()}
+    <button id="scroll-top-btn" class="scroll-top-btn interactive-element" aria-label="Volver arriba" title="Volver arriba">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
     <div id="toast" class="toast-notification">¡Acción completada!</div>
   `;
 
@@ -401,9 +432,9 @@ function runPreloader() {
     }
   });
 
-  tl.to('.loader-progress', { width: '100%', duration: 1.1, ease: 'power2.inOut' })
-    .to('.loader-text', { opacity: 0, duration: 0.25 }, "-=0.2")
-    .to('#preloader', { yPercent: -100, duration: 0.7, ease: 'power4.inOut' });
+  tl.to('.loader-progress', { width: '100%', duration: 1.0, ease: 'power2.inOut' })
+    .to('.loader-text', { opacity: 0, duration: 0.2 }, "-=0.2")
+    .to('#preloader', { yPercent: -100, duration: 0.6, ease: 'power4.inOut' });
 }
 
 function initCore() {
@@ -411,38 +442,45 @@ function initCore() {
   initAnimations();
   initCustomCursor();
   initTiltEffect();
-  initMarquee();
   initMagneticButtons();
   initContactLogic();
   initCategoryFilters();
   initTopologyModal();
+  initNavScroll();
+  initScrollTop();
 }
 
 function initContactLogic() {
   const toast = document.getElementById('toast');
   const targetEmail = profileInfo.email;
 
+  if (toast) {
+    gsap.set(toast, { xPercent: -50, y: 100, autoAlpha: 0 });
+  }
+
   const showToast = (message: string) => {
     if (!toast) return;
     toast.textContent = message;
     gsap.killTweensOf(toast);
     gsap.to(toast, {
+      xPercent: -50,
       y: 0,
       autoAlpha: 1,
-      duration: 0.5,
-      ease: "back.out(1.5)"
+      duration: 0.45,
+      ease: "back.out(1.6)"
     });
 
     gsap.to(toast, {
+      xPercent: -50,
       y: 100,
       autoAlpha: 0,
-      duration: 0.4,
-      delay: 3.5,
+      duration: 0.35,
+      delay: 3.2,
       ease: "power2.in"
     });
   };
 
-  const copyTextToClipboard = async (text: string) => {
+  const copyTextToClipboard = async (text: string, triggerBtn?: HTMLElement) => {
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
@@ -451,12 +489,28 @@ function initContactLogic() {
         textArea.value = text;
         textArea.style.position = "fixed";
         textArea.style.left = "-999999px";
+        textArea.setAttribute('readonly', '');
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
+        textArea.setSelectionRange(0, 99999);
         document.execCommand('copy');
         textArea.remove();
       }
+
+      if (triggerBtn) {
+        const tag = triggerBtn.querySelector('.copy-tag, .copy-badge');
+        if (tag) {
+          const original = tag.textContent;
+          tag.textContent = 'COPIADO ✓';
+          (tag as HTMLElement).style.color = '#00ff9d';
+          setTimeout(() => {
+            tag.textContent = original;
+            (tag as HTMLElement).style.color = '';
+          }, 2000);
+        }
+      }
+
       showToast(`¡Correo copiado: ${text}!`);
     } catch (err) {
       console.error('Error al copiar correo:', err);
@@ -467,7 +521,7 @@ function initContactLogic() {
   copyElements.forEach(el => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      copyTextToClipboard(targetEmail);
+      copyTextToClipboard(targetEmail, el as HTMLElement);
     });
   });
 }
@@ -490,14 +544,15 @@ function initCategoryFilters() {
         if (filter === 'all' || itemCategory === filter) {
           element.style.display = 'block';
           gsap.fromTo(element, 
-            { opacity: 0, scale: 0.95 },
-            { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+            { opacity: 0, scale: 0.96 },
+            { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
           );
         } else {
           element.style.display = 'none';
         }
       });
 
+      if (lenisInstance) lenisInstance.resize();
       ScrollTrigger.refresh();
     });
   });
@@ -532,10 +587,11 @@ function initTopologyModal() {
 
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    if (lenisInstance) lenisInstance.stop();
 
     gsap.fromTo('.topology-modal-container', 
-      { opacity: 0, scale: 0.92, y: 30 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" }
+      { opacity: 0, scale: 0.92, y: 25 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "power3.out" }
     );
   };
 
@@ -543,12 +599,13 @@ function initTopologyModal() {
     gsap.to('.topology-modal-container', {
       opacity: 0,
       scale: 0.94,
-      y: 20,
-      duration: 0.25,
+      y: 15,
+      duration: 0.2,
       ease: "power2.in",
       onComplete: () => {
         modal.classList.remove('open');
         document.body.style.overflow = '';
+        if (lenisInstance) lenisInstance.start();
       }
     });
   };
@@ -573,8 +630,46 @@ function initTopologyModal() {
   });
 }
 
+function initNavScroll() {
+  document.querySelectorAll('.nav-scroll-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute('data-target');
+      if (!targetId || !lenisInstance) return;
+
+      if (targetId === 'top') {
+        lenisInstance.scrollTo(0, { duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+      } else {
+        const el = document.getElementById(targetId);
+        if (el) {
+          lenisInstance.scrollTo(el, { offset: -70, duration: 1.2 });
+        }
+      }
+    });
+  });
+}
+
+function initScrollTop() {
+  const scrollTopBtn = document.getElementById('scroll-top-btn');
+  if (!scrollTopBtn) return;
+
+  scrollTopBtn.addEventListener('click', () => {
+    if (lenisInstance) {
+      lenisInstance.scrollTo(0, { duration: 1.2 });
+    }
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+}
+
 function initSmoothScrolling() {
-  const lenis = new Lenis({
+  lenisInstance = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
@@ -585,14 +680,16 @@ function initSmoothScrolling() {
     infinite: false,
   });
 
-  lenis.on('scroll', ScrollTrigger.update);
+  lenisInstance.on('scroll', ScrollTrigger.update);
   
-  lenis.on('scroll', (e: any) => {
+  lenisInstance.on('scroll', (e: any) => {
     const progress = e.progress * 100;
     gsap.set('.scroll-progress', { width: progress + "%" });
   });
 
-  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+  gsap.ticker.add((time) => {
+    if (lenisInstance) lenisInstance.raf(time * 1000);
+  });
   gsap.ticker.lagSmoothing(0);
 }
 
@@ -607,13 +704,13 @@ function initAnimations() {
   });
 
   gsap.fromTo('.gsap-hero-element', 
-    { y: 30, opacity: 0 },
-    { y: 0, opacity: 1, duration: 1.0, stagger: 0.08, ease: 'power3.out', delay: 0.25 }
+    { y: 25, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.9, stagger: 0.07, ease: 'power3.out', delay: 0.2 }
   );
 
   const revealElements = document.querySelectorAll('.gsap-reveal');
   revealElements.forEach((el) => {
-    gsap.set(el, { autoAlpha: 0, y: 50, scale: 0.99 });
+    gsap.set(el, { autoAlpha: 0, y: 45, scale: 0.99 });
 
     ScrollTrigger.create({
       trigger: el,
@@ -623,7 +720,7 @@ function initAnimations() {
           autoAlpha: 1,
           y: 0,
           scale: 1,
-          duration: 0.8,
+          duration: 0.75,
           ease: 'power3.out',
           overwrite: 'auto'
         });
@@ -645,15 +742,8 @@ function initAnimations() {
   });
 }
 
-function initMarquee() {
-  const marquees = document.querySelectorAll('.marquee-content');
-  marquees.forEach((content) => {
-    gsap.to(content, { xPercent: -100, repeat: -1, duration: 32, ease: "linear" });
-  });
-}
-
 function initCustomCursor() {
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) return;
 
   const cursor = document.querySelector('.custom-cursor') as HTMLElement;
   const follower = document.querySelector('.custom-cursor-follower') as HTMLElement;
@@ -671,6 +761,16 @@ function initCustomCursor() {
     gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.05, ease: "none" });
   });
 
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+    follower.style.opacity = '0';
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+    follower.style.opacity = '1';
+  });
+
   gsap.ticker.add(() => {
     followerX += (mouseX - followerX) * 0.2;
     followerY += (mouseY - followerY) * 0.2;
@@ -685,7 +785,7 @@ function initCustomCursor() {
 }
 
 function initTiltEffect() {
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) return;
 
   const cards = document.querySelectorAll('.interactive-card');
   cards.forEach((card) => {
@@ -716,7 +816,7 @@ function initTiltEffect() {
 }
 
 function initMagneticButtons() {
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) return;
 
   const magneticEls = document.querySelectorAll('.magnetic-btn');
   
