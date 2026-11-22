@@ -15,10 +15,8 @@ Diseñado con una arquitectura Vanilla de alto rendimiento sin frameworks pesado
 
 ## ✨ Nuevas Características & Funcionalidades Interactivas
 
-* **📟 Mini Terminal CLI ("Hacker Console"):** Consola interactiva embebida con soporte para comandos reales (`help`, `about`, `skills`, `projects`, `labs`, `cv`, `ping`, `contact`, `clear`).
 * **🗂️ Filtro Dinámico por Categorías:** Clasificación en tiempo real animada con GSAP (`Todos`, `NetDevOps & Cisco`, `Cloud & Servidores`, `IoT & FreeRTOS`, `Software & PWA`).
 * **🗺️ Modal Interactivo de Arquitectura & Topología de Red:** Visor SVG interactivo de alta resolución con diagramas de red corporativa Cisco/Fortinet, cluster privado y firmware ESP32 FreeRTOS.
-* **💻 Visor de Código NetDevOps:** Snippet de Python con syntax highlighting que muestra auditoría de VLANs y consumo de APIs RESTCONF nativas.
 * **📄 Descarga Directa de CV:** Botones de 1 clic en Hero y CTA enlazados al currículum oficial en PDF (`CV_Uriel_Torres_Salazar.pdf`).
 * **🔒 Seguridad y Privacidad Garantizada:** Presentación del Homelab bajo un modelo de Caso de Estudio de Arquitectura sin exponer URLs ni endpoints privados de la red doméstica.
 

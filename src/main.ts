@@ -7,8 +7,7 @@ import {
   toolsMarquee,
   socialLinks,
   filterCategories,
-  certificationsData,
-  pythonSnippetCode
+  certificationsData
 } from './data';
 import { topologiesMap, TopologyDiagram } from './topologies';
 import { gsap } from 'gsap';
@@ -88,29 +87,6 @@ function generateHeroHTML(): string {
         <a href="https://www.linkedin.com/in/nyxthorn" target="_blank" rel="noopener noreferrer" class="hero-btn interactive-element">
           ${getIconSVG('LinkedIn')} LinkedIn
         </a>
-      </div>
-
-      <!-- Mini Terminal Embebida ("Hacker Console") -->
-      <div class="terminal-container gsap-hero-element" id="mini-terminal">
-        <div class="terminal-bar">
-          <div class="terminal-dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-          </div>
-          <span class="terminal-title">uriel@netdevops-edge:~ (zsh)</span>
-          <span class="terminal-hint">Prueba: help, ping, cv, skills, projects</span>
-        </div>
-        <div class="terminal-output" id="terminal-output">
-          <div class="term-line welcome-msg">
-            <span class="text-cyan">NetDevOps Console 7.0 (x86_64)</span> — Bienvenido al entorno interactivo de Uriel Torres.
-          </div>
-          <div class="term-line">Escribe <span class="term-highlight">'help'</span> para listar los comandos disponibles o <span class="term-highlight">'cv'</span> para descargar el currículum.</div>
-        </div>
-        <div class="terminal-input-row">
-          <span class="terminal-prompt">uriel@netdevops:~$</span>
-          <input type="text" id="terminal-input" class="terminal-input" placeholder="escribe un comando..." autocomplete="off" spellcheck="false" />
-        </div>
       </div>
 
       <div class="collaboration-box gsap-hero-element">
@@ -206,34 +182,6 @@ function generateProjectsHTML(): string {
 
       <div class="bento-grid projects-grid" id="projects-grid">
         ${projectsCards}
-      </div>
-    </section>
-  `;
-}
-
-function generateNetDevOpsCodeHTML(): string {
-  return `
-    <section id="automatizacion-code" class="gsap-reveal">
-      <div class="section-header-box">
-        <span class="section-tag">Código en Producción</span>
-        <h2 class="section-title">Automatización NetDevOps en Python</h2>
-        <p class="section-subtitle">Orquestación idempotente para switches Cisco Catalyst y consumo de telemetría RESTCONF.</p>
-      </div>
-
-      <div class="code-editor-card">
-        <div class="code-editor-header">
-          <div class="terminal-dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-          </div>
-          <span class="code-filename">cisco_netdevops_automation.py</span>
-          <button class="copy-code-btn interactive-element" id="copy-snippet-btn" title="Copiar código al portapapeles">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            Copiar Código
-          </button>
-        </div>
-        <pre class="code-pre"><code class="language-python">${escapeHTML(pythonSnippetCode)}</code></pre>
       </div>
     </section>
   `;
@@ -424,10 +372,6 @@ function generateModalHTML(): string {
   `;
 }
 
-function escapeHTML(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
 function initApp() {
   const appElement = document.getElementById('app');
   if (!appElement) return;
@@ -436,7 +380,6 @@ function initApp() {
     <div class="container">
       ${generateHeroHTML()}
       ${generateProjectsHTML()}
-      ${generateNetDevOpsCodeHTML()}
       ${generateLabsHTML()}
       ${generateSkillsHTML()}
       ${generateCTAHTML()}
@@ -471,10 +414,8 @@ function initCore() {
   initMarquee();
   initMagneticButtons();
   initContactLogic();
-  initTerminal();
   initCategoryFilters();
   initTopologyModal();
-  initCodeSnippetCopy();
 }
 
 function initContactLogic() {
@@ -528,114 +469,6 @@ function initContactLogic() {
       e.preventDefault();
       copyTextToClipboard(targetEmail);
     });
-  });
-}
-
-function initTerminal() {
-  const termInput = document.getElementById('terminal-input') as HTMLInputElement;
-  const termOutput = document.getElementById('terminal-output');
-  const miniTerminal = document.getElementById('mini-terminal');
-
-  if (!termInput || !termOutput || !miniTerminal) return;
-
-  miniTerminal.addEventListener('click', () => {
-    termInput.focus();
-  });
-
-  const appendLine = (html: string) => {
-    const div = document.createElement('div');
-    div.className = 'term-line';
-    div.innerHTML = html;
-    termOutput.appendChild(div);
-    termOutput.scrollTop = termOutput.scrollHeight;
-  };
-
-  termInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      const rawCmd = termInput.value.trim();
-      const cmd = rawCmd.toLowerCase();
-      termInput.value = '';
-
-      if (!cmd) return;
-
-      // Echo command
-      appendLine(`<span class="term-prompt">uriel@netdevops:~$</span> <span class="term-cmd">${rawCmd}</span>`);
-
-      switch (cmd) {
-        case 'help':
-          appendLine(`
-            <div class="term-help-block">
-              <div><span class="text-cyan">about</span> — Ver perfil profesional y especialidad</div>
-              <div><span class="text-cyan">skills</span> — Resumen de tecnologías de red y sistemas</div>
-              <div><span class="text-cyan">projects</span> — Desplazar la vista a los proyectos</div>
-              <div><span class="text-cyan">labs</span> — Explorar infraestructura crítica</div>
-              <div><span class="text-cyan">cv</span> — Descargar el Currículum Vitae en PDF</div>
-              <div><span class="text-cyan">ping</span> — Ejecutar prueba telemétrica ICMP simulada</div>
-              <div><span class="text-cyan">contact</span> — Copiar correo de contacto oficial</div>
-              <div><span class="text-cyan">clear</span> — Limpiar la consola</div>
-            </div>
-          `);
-          break;
-
-        case 'about':
-          appendLine(`
-            <div class="text-green">${profileInfo.name} | ${profileInfo.role}</div>
-            <div class="text-gray">${profileInfo.headline}</div>
-            <div class="text-gray" style="margin-top: 4px;">🎓 ${profileInfo.education}</div>
-          `);
-          break;
-
-        case 'skills':
-          appendLine(`
-            <div>📡 <span class="text-cyan">Cisco:</span> Catalyst 9300L/9200L, VLANs 802.1Q, OSPF, STP</div>
-            <div>🛡️ <span class="text-cyan">Seguridad:</span> Fortinet FortiGate SD-WAN, Cloudflare Zero Trust, UFW</div>
-            <div>🖥️ <span class="text-cyan">Linux:</span> Ubuntu Server, ZRAM zstd en RAM, Docker, WireGuard</div>
-            <div>⚡ <span class="text-cyan">NetDevOps:</span> Python (Netmiko, RESTCONF, FastAPI), Git, CI/CD</div>
-            <div>🤖 <span class="text-cyan">IoT:</span> ESP32 Dual-Core (FreeRTOS), Mosquitto MQTT, Node-RED</div>
-          `);
-          break;
-
-        case 'projects':
-          appendLine(`<span class="text-green">Desplazando hacia la sección de proyectos...</span>`);
-          document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' });
-          break;
-
-        case 'labs':
-          appendLine(`<span class="text-green">Desplazando hacia infraestructura crítica...</span>`);
-          document.getElementById('laboratorios')?.scrollIntoView({ behavior: 'smooth' });
-          break;
-
-        case 'cv':
-          appendLine(`<span class="text-green">Iniciando descarga de CV_Uriel_Torres_Salazar.pdf...</span>`);
-          const link = document.createElement('a');
-          link.href = '/CV_Uriel_Torres_Salazar.pdf';
-          link.download = 'CV_Uriel_Torres_Salazar.pdf';
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          break;
-
-        case 'ping':
-          appendLine(`<span class="text-gray">PING cisco-core.tecsup.local (10.10.10.2): 56 data bytes</span>`);
-          setTimeout(() => appendLine(`64 bytes from 10.10.10.2: icmp_seq=1 ttl=64 time=1.84 ms`), 150);
-          setTimeout(() => appendLine(`64 bytes from 10.10.10.2: icmp_seq=2 ttl=64 time=1.62 ms`), 300);
-          setTimeout(() => appendLine(`<span class="text-green">--- cisco-core.tecsup.local ping statistics: 0% packet loss, rtt min/avg/max = 1.62/1.73/1.84 ms</span>`), 450);
-          break;
-
-        case 'contact':
-          navigator.clipboard?.writeText(profileInfo.email);
-          appendLine(`<span class="text-cyan">Correo: ${profileInfo.email} (¡Copiado al portapapeles!)</span>`);
-          break;
-
-        case 'clear':
-          termOutput.innerHTML = '';
-          break;
-
-        default:
-          appendLine(`<span class="text-red">zsh: comando no reconocido: '${rawCmd}'. Escribe 'help' para ayuda.</span>`);
-          break;
-      }
-    }
   });
 }
 
@@ -737,24 +570,6 @@ function initTopologyModal() {
     if (e.key === 'Escape' && modal.classList.contains('open')) {
       closeModal();
     }
-  });
-}
-
-function initCodeSnippetCopy() {
-  const copyBtn = document.getElementById('copy-snippet-btn');
-  const toast = document.getElementById('toast');
-
-  if (!copyBtn) return;
-
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard?.writeText(pythonSnippetCode).then(() => {
-      if (toast) {
-        toast.textContent = "¡Código de automatización copiado!";
-        gsap.killTweensOf(toast);
-        gsap.to(toast, { y: 0, autoAlpha: 1, duration: 0.5, ease: "back.out(1.5)" });
-        gsap.to(toast, { y: 100, autoAlpha: 0, duration: 0.4, delay: 3, ease: "power2.in" });
-      }
-    });
   });
 }
 

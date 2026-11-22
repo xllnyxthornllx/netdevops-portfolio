@@ -416,126 +416,6 @@ h1 {
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
 }
 
-/* Mini Terminal Embebida */
-.terminal-container {
-  width: 100%;
-  max-width: 900px;
-  margin-top: var(--spacing-md);
-  background: #080d16;
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.terminal-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.65rem 1.2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.terminal-dots {
-  display: flex;
-  gap: 0.45rem;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.dot.red { background: #ff5f56; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green { background: #27c93f; }
-
-.terminal-title {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-.terminal-hint {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent-color);
-  opacity: 0.8;
-}
-
-.terminal-output {
-  padding: 1rem 1.2rem;
-  max-height: 180px;
-  overflow-y: auto;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--text-primary);
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  line-height: 1.5;
-}
-
-.term-line {
-  word-break: break-word;
-}
-
-.term-prompt {
-  color: var(--accent-color);
-  font-weight: bold;
-}
-
-.term-cmd {
-  color: #fff;
-  font-weight: 500;
-}
-
-.term-highlight {
-  color: var(--accent-green);
-  font-weight: bold;
-}
-
-.term-help-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 0.3rem;
-  padding-left: 0.5rem;
-}
-
-.text-cyan { color: var(--accent-color); }
-.text-green { color: var(--accent-green); }
-.text-gray { color: var(--text-secondary); }
-.text-red { color: var(--accent-red); }
-
-.terminal-input-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.terminal-prompt {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--accent-color);
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.terminal-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  outline: none;
-  cursor: text !important;
-}
 
 .collaboration-box {
   margin-top: var(--spacing-md);
@@ -951,60 +831,6 @@ section {
   width: fit-content;
 }
 
-/* Code Editor Card */
-.code-editor-card {
-  background: #090e18;
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
-}
-
-.code-editor-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1.4rem;
-  background: rgba(255, 255, 255, 0.025);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.code-filename {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-}
-
-.copy-code-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  transition: var(--transition);
-  cursor: pointer !important;
-}
-
-.copy-code-btn:hover {
-  background: rgba(0, 240, 255, 0.1);
-  border-color: var(--accent-color);
-  color: #ffffff;
-}
-
-.code-pre {
-  padding: 1.5rem;
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: #e6edf3;
-  tab-size: 4;
-}
 
 /* Skills specific */
 .skill-header {
@@ -1395,9 +1221,6 @@ section {
     align-items: flex-start;
     width: 100%;
     gap: 0.8rem;
-  }
-  .terminal-container {
-    display: none;
   }
 }
 
