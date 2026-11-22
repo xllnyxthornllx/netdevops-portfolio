@@ -120,6 +120,7 @@ export const projectsData: Project[] = [
     ],
     technologies: ["React 18", "TypeScript", "Tailwind CSS", "PWA Offline", "BroadcastChannel", "QR Engine"],
     link: "https://github.com/xllnyxthornllx/Cupora",
+    topologyId: "cupora",
     status: "Producción PWA",
     badgeType: "production"
   },
@@ -222,6 +223,7 @@ export const projectsData: Project[] = [
     ],
     technologies: ["FastAPI", "WebSockets", "pywinpty", "SQLite FTS5", "Python", "Windows PTY"],
     link: "https://github.com/xllnyxthornllx",
+    topologyId: "antigravity-hub",
     status: "Producción Local",
     badgeType: "production"
   }

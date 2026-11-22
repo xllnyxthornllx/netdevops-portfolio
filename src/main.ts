@@ -157,21 +157,17 @@ function generateProjectsHTML(): string {
     let actionButtons = '';
     if (project.topologyId) {
       actionButtons += `
-        <button class="project-action-btn view-topology-btn interactive-element" data-topology="${project.topologyId}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><line x1="6" y1="9" x2="12" y2="15"></line><line x1="18" y1="9" x2="12" y2="15"></line></svg>
-          <span>Ver Topología / Arquitectura</span>
+        <button class="project-action-btn view-topology-btn interactive-element" data-topology="${project.topologyId}" title="Ver topología interactiva de red">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><line x1="6" y1="9" x2="12" y2="15"></line><line x1="18" y1="9" x2="12" y2="15"></line></svg>
+          <span>Ver Topología & Arquitectura</span>
         </button>
       `;
     }
     if (project.link && !project.isPrivate) {
       actionButtons += `
-        <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="project-action-btn interactive-element">
-          <span>Explorar Proyecto</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
+        <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="project-action-btn project-link-btn interactive-element" title="Explorar código en GitHub">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span>Código en GitHub ↗</span>
         </a>
       `;
     }
@@ -397,20 +393,102 @@ function generateModalHTML(): string {
       <div class="topology-modal-container">
         <div class="topology-modal-header">
           <div class="modal-header-titles">
+            <div class="modal-badge-row">
+              <span id="modal-badge" class="modal-status-badge">ACTIVO</span>
+              <span id="modal-subtitle" class="modal-subtitle">Especificación Técnica</span>
+            </div>
             <h3 id="modal-title" class="modal-title">Topología de Red</h3>
-            <span id="modal-subtitle" class="modal-subtitle">Especificación Técnica</span>
           </div>
-          <button id="modal-close-btn" class="modal-close-btn interactive-element" aria-label="Cerrar modal">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <div class="modal-header-actions">
+            <button id="modal-close-btn" class="modal-close-btn interactive-element" aria-label="Cerrar modal" title="Cerrar (Esc)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs inside Modal -->
+        <div class="modal-tabs-bar">
+          <button class="modal-tab-btn active interactive-element" data-tab="diagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><line x1="6" y1="9" x2="12" y2="15"></line><line x1="18" y1="9" x2="12" y2="15"></line></svg>
+            <span>Diagrama de Arquitectura</span>
+          </button>
+          <button class="modal-tab-btn interactive-element" data-tab="config">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            <span>Consola & Código CLI</span>
+          </button>
+          <button class="modal-tab-btn interactive-element" data-tab="specs">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            <span>Matriz de Especificaciones</span>
           </button>
         </div>
 
         <div class="topology-modal-body" data-lenis-prevent>
-          <div id="modal-svg-container" class="modal-svg-box"></div>
-          
-          <div class="modal-details-box">
+          <!-- TAB 1: DIAGRAM -->
+          <div id="modal-tab-diagram" class="modal-tab-content active">
+            <div class="modal-diagram-toolbar">
+              <span class="toolbar-hint">💡 Clic en los nodos del diagrama para inspeccionar su configuración en vivo</span>
+              <div class="zoom-controls">
+                <button id="zoom-in-btn" class="zoom-btn interactive-element" title="Acercar">+</button>
+                <button id="zoom-out-btn" class="zoom-btn interactive-element" title="Alejar">−</button>
+                <button id="zoom-reset-btn" class="zoom-btn interactive-element" title="Restablecer tamaño">100%</button>
+              </div>
+            </div>
+
+            <div id="modal-svg-wrapper" class="modal-svg-wrapper">
+              <div id="modal-svg-container" class="modal-svg-box"></div>
+            </div>
+
+            <!-- Node Live Inspector Drawer -->
+            <div id="modal-node-inspector" class="modal-node-inspector" style="display: none;">
+              <div class="node-inspector-header">
+                <div class="node-inspector-title-row">
+                  <span id="node-inspector-icon">⚡</span>
+                  <strong id="node-inspector-name">Nodo Seleccionado</strong>
+                  <span id="node-inspector-status" class="node-status-chip">ACTIVO</span>
+                </div>
+                <button id="node-inspector-close" class="node-inspector-close-btn" title="Cerrar detalle">✕</button>
+              </div>
+              <p id="node-inspector-desc" class="node-inspector-desc"></p>
+              <div class="node-inspector-grid">
+                <div class="node-stat-item">
+                  <span class="stat-lbl">ROL EN TOPOLOGÍA:</span>
+                  <span id="node-inspector-role" class="stat-val">-</span>
+                </div>
+                <div class="node-stat-item">
+                  <span class="stat-lbl">DIRECCIÓN IP / SUBNET:</span>
+                  <span id="node-inspector-ip" class="stat-val">-</span>
+                </div>
+                <div class="node-stat-item">
+                  <span class="stat-lbl">PUERTOS / INTERFACES:</span>
+                  <span id="node-inspector-ports" class="stat-val">-</span>
+                </div>
+              </div>
+            </div>
+
             <p id="modal-description" class="modal-description"></p>
-            <h4 class="modal-specs-title">Componentes & Configuración</h4>
+          </div>
+
+          <!-- TAB 2: CLI CONFIG & CODE -->
+          <div id="modal-tab-config" class="modal-tab-content">
+            <div class="code-terminal-wrapper">
+              <div class="code-terminal-header">
+                <div class="terminal-dots">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <span id="modal-code-title" class="code-terminal-title">running-config</span>
+                <button id="modal-copy-code-btn" class="code-copy-btn interactive-element" title="Copiar código al portapapeles">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Copiar</span>
+                </button>
+              </div>
+              <pre class="code-terminal-body"><code id="modal-code-content"></code></pre>
+            </div>
+          </div>
+
+          <!-- TAB 3: SPECS MATRIX -->
+          <div id="modal-tab-specs" class="modal-tab-content">
             <div id="modal-specs-grid" class="modal-specs-grid"></div>
           </div>
         </div>
@@ -586,21 +664,145 @@ function initTopologyModal() {
   const closeBtn = document.getElementById('modal-close-btn');
   const titleEl = document.getElementById('modal-title');
   const subtitleEl = document.getElementById('modal-subtitle');
+  const badgeEl = document.getElementById('modal-badge');
   const descEl = document.getElementById('modal-description');
   const svgContainer = document.getElementById('modal-svg-container');
   const specsGrid = document.getElementById('modal-specs-grid');
+  const codeTitleEl = document.getElementById('modal-code-title');
+  const codeContentEl = document.getElementById('modal-code-content');
+  const copyCodeBtn = document.getElementById('modal-copy-code-btn');
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.modal-tab-btn');
+  const tabContents = document.querySelectorAll('.modal-tab-content');
+
+  // Zoom
+  const zoomInBtn = document.getElementById('zoom-in-btn');
+  const zoomOutBtn = document.getElementById('zoom-out-btn');
+  const zoomResetBtn = document.getElementById('zoom-reset-btn');
+  let currentZoom = 1.0;
+
+  // Node Inspector
+  const nodeInspector = document.getElementById('modal-node-inspector');
+  const nodeCloseBtn = document.getElementById('node-inspector-close');
+  const nodeNameEl = document.getElementById('node-inspector-name');
+  const nodeStatusEl = document.getElementById('node-inspector-status');
+  const nodeDescEl = document.getElementById('node-inspector-desc');
+  const nodeRoleEl = document.getElementById('node-inspector-role');
+  const nodeIpEl = document.getElementById('node-inspector-ip');
+  const nodePortsEl = document.getElementById('node-inspector-ports');
 
   if (!modal || !closeBtn || !titleEl || !subtitleEl || !descEl || !svgContainer || !specsGrid) return;
+
+  const applyZoom = () => {
+    if (svgContainer) {
+      svgContainer.style.transform = `scale(${currentZoom})`;
+      svgContainer.style.transformOrigin = 'center top';
+    }
+    if (zoomResetBtn) {
+      zoomResetBtn.textContent = `${Math.round(currentZoom * 100)}%`;
+    }
+  };
+
+  if (zoomInBtn) {
+    zoomInBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentZoom = Math.min(currentZoom + 0.2, 2.0);
+      applyZoom();
+    });
+  }
+
+  if (zoomOutBtn) {
+    zoomOutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentZoom = Math.max(currentZoom - 0.2, 0.7);
+      applyZoom();
+    });
+  }
+
+  if (zoomResetBtn) {
+    zoomResetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentZoom = 1.0;
+      applyZoom();
+    });
+  }
+
+  // Tab switching
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      const targetTab = btn.getAttribute('data-tab');
+      const targetContent = document.getElementById(`modal-tab-${targetTab}`);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+    });
+  });
+
+  // Code copy
+  if (copyCodeBtn && codeContentEl) {
+    copyCodeBtn.addEventListener('click', async () => {
+      try {
+        const textToCopy = codeContentEl.textContent || '';
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(textToCopy);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        const span = copyCodeBtn.querySelector('span');
+        if (span) {
+          const orig = span.textContent;
+          span.textContent = '¡Copiado ✓!';
+          setTimeout(() => { span.textContent = orig; }, 2000);
+        }
+      } catch (err) {
+        console.error('Error al copiar código:', err);
+      }
+    });
+  }
+
+  // Close node inspector
+  if (nodeCloseBtn && nodeInspector) {
+    nodeCloseBtn.addEventListener('click', () => {
+      nodeInspector.style.display = 'none';
+    });
+  }
 
   const openModal = (topologyId: string) => {
     const data: TopologyDiagram = topologiesMap[topologyId];
     if (!data) return;
 
+    // Reset Zoom and Inspector
+    currentZoom = 1.0;
+    applyZoom();
+    if (nodeInspector) nodeInspector.style.display = 'none';
+
+    // Reset active tab to Diagram
+    tabBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === 'diagram'));
+    tabContents.forEach(c => c.classList.toggle('active', c.id === 'modal-tab-diagram'));
+
     titleEl.textContent = data.title;
     subtitleEl.textContent = data.subtitle;
+    if (badgeEl) badgeEl.textContent = data.badge || 'PRODUCCIÓN';
     descEl.textContent = data.description;
     svgContainer.innerHTML = data.svg;
 
+    // Load CLI Config
+    if (codeTitleEl && codeContentEl && data.cliConfig) {
+      codeTitleEl.textContent = data.cliConfig.title;
+      codeContentEl.textContent = data.cliConfig.code;
+    }
+
+    // Load Specs Grid
     specsGrid.innerHTML = data.specs.map(spec => `
       <div class="spec-card">
         <span class="spec-label">${spec.label}</span>
@@ -608,12 +810,33 @@ function initTopologyModal() {
       </div>
     `).join('');
 
+    // Attach click handlers to clickable SVG nodes
+    const clickableNodes = svgContainer.querySelectorAll('.topo-clickable-node');
+    clickableNodes.forEach(svgNode => {
+      svgNode.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nodeId = svgNode.getAttribute('data-node');
+        if (!nodeId || !data.nodes) return;
+        const nodeData = data.nodes.find(n => n.id === nodeId);
+        if (nodeData && nodeInspector) {
+          if (nodeNameEl) nodeNameEl.textContent = nodeData.name;
+          if (nodeStatusEl) nodeStatusEl.textContent = nodeData.status;
+          if (nodeDescEl) nodeDescEl.textContent = nodeData.description;
+          if (nodeRoleEl) nodeRoleEl.textContent = nodeData.role;
+          if (nodeIpEl) nodeIpEl.textContent = nodeData.ip;
+          if (nodePortsEl) nodePortsEl.textContent = nodeData.ports;
+          nodeInspector.style.display = 'flex';
+          nodeInspector.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     if (lenisInstance) lenisInstance.stop();
 
     gsap.fromTo('.topology-modal-container', 
-      { opacity: 0, scale: 0.92, y: 25 },
+      { opacity: 0, scale: 0.94, y: 20 },
       { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "power3.out" }
     );
   };
