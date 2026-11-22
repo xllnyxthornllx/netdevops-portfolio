@@ -137,7 +137,7 @@ export const projectsData: Project[] = [
       "Orquestación de flujos reactivos en Node-RED y persistencia de telemetría en MariaDB."
     ],
     technologies: ["ESP32 FreeRTOS", "Mosquitto MQTT", "Node-RED", "Cloudflare Zero Trust", "Ubuntu Server", "MariaDB"],
-    link: "https://github.com/xllnyxthornllx/Aethermqtt-web",
+    link: "https://github.com/xllnyxthornllx/AIDA-",
     topologyId: "aida-iot",
     status: "Activo / Desplegado",
     badgeType: "live"
