@@ -40,6 +40,12 @@ export interface Certification {
   year: string;
 }
 
+export interface Language {
+  language: string;
+  level: string;
+  detail: string;
+}
+
 export const profileInfo = {
   name: "Uriel Aron Torres Salazar",
   role: "SysAdmin & NetDevOps Specialist",
@@ -77,6 +83,11 @@ export const certificationsData: Certification[] = [
     code: "Cert. AQP/PCC/24/4202",
     year: "2024"
   }
+];
+
+export const languagesData: Language[] = [
+  { language: "Español", level: "Nativo", detail: "Lengua materna • Comunicación técnica y corporativa fluida" },
+  { language: "Inglés", level: "Intermedio (B1/B2)", detail: "Lectura técnica, documentación RFC/IEEE y configuración de switches Cisco / Fortinet" }
 ];
 
 export const socialLinks: SocialLink[] = [
@@ -197,6 +208,22 @@ export const projectsData: Project[] = [
     link: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
     status: "CI/CD Pipeline",
     badgeType: "active"
+  },
+  {
+    id: "antigravity-hub",
+    title: "Antigravity Hub — Terminal PTY & Gestor de Sesiones",
+    category: "software",
+    categoryLabel: "Software & Sistemas",
+    description: "Entorno interactivo local de alto rendimiento para emulación de terminales PTY y administración centralizada de sesiones técnicas sobre Windows.",
+    bulletPoints: [
+      "Servicio backend en FastAPI y WebSockets comunicándose en tiempo real con pseudo-terminales interactivos mediante pywinpty.",
+      "Persistencia indexada en SQLite con motor de búsqueda de texto completo FTS5 para recuperación instantánea de comandos y sesiones.",
+      "Interfaz de usuario ultra-ligera y sin dependencias externas pesadas, con soporte completo para control de ventanas y logs."
+    ],
+    technologies: ["FastAPI", "WebSockets", "pywinpty", "SQLite FTS5", "Python", "Windows PTY"],
+    link: "https://github.com/xllnyxthornllx",
+    status: "Producción Local",
+    badgeType: "production"
   }
 ];
 

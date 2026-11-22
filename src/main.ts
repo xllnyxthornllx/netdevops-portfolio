@@ -7,7 +7,8 @@ import {
   toolsMarquee,
   socialLinks,
   filterCategories,
-  certificationsData
+  certificationsData,
+  languagesData
 } from './data';
 import { topologiesMap, TopologyDiagram } from './topologies';
 import { gsap } from 'gsap';
@@ -70,11 +71,17 @@ function generateNavbarHTML(): string {
 function generateHeroHTML(): string {
   return `
     <header class="gsap-hero-section" id="top">
-      <div class="hero-top-badges gsap-hero-element">
-        <span class="hero-greeting">${profileInfo.role}</span>
-        <span class="status-indicator availability-pill">
-          <span class="status-dot"></span> ${profileInfo.status}
-        </span>
+      <div class="hero-profile-row gsap-hero-element">
+        <div class="hero-avatar-wrapper">
+          <img src="/profile_photo.jpeg" alt="Uriel Aron Torres Salazar" class="hero-avatar-img" />
+          <span class="avatar-status-dot" title="En línea y disponible"></span>
+        </div>
+        <div class="hero-top-badges">
+          <span class="hero-greeting">${profileInfo.role}</span>
+          <span class="status-indicator availability-pill">
+            <span class="status-dot"></span> ${profileInfo.status}
+          </span>
+        </div>
       </div>
 
       <h1 class="gsap-split-text">${splitTextIntoSpans(profileInfo.name)}</h1>
@@ -318,6 +325,19 @@ function generateSkillsHTML(): string {
         <div class="cert-grid">
           ${certCards}
         </div>
+
+        <h3 class="cert-heading" style="margin-top: 2rem;">🌐 Idiomas</h3>
+        <div class="cert-grid">
+          ${languagesData.map(lang => `
+            <div class="cert-item">
+              <div class="cert-icon">🗣️</div>
+              <div class="cert-info">
+                <span class="cert-title">${lang.language} — <strong style="color: var(--accent-color);">${lang.level}</strong></span>
+                <span class="cert-issuer">${lang.detail}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
       </div>
     </section>
   `;
@@ -385,7 +405,7 @@ function generateModalHTML(): string {
           </button>
         </div>
 
-        <div class="topology-modal-body">
+        <div class="topology-modal-body" data-lenis-prevent>
           <div id="modal-svg-container" class="modal-svg-box"></div>
           
           <div class="modal-details-box">
@@ -542,18 +562,21 @@ function initCategoryFilters() {
         const element = item as HTMLElement;
 
         if (filter === 'all' || itemCategory === filter) {
-          element.style.display = 'block';
+          element.style.display = '';
           gsap.fromTo(element, 
-            { opacity: 0, scale: 0.96 },
-            { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
+            { autoAlpha: 0, scale: 0.96 },
+            { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out", overwrite: 'auto' }
           );
         } else {
           element.style.display = 'none';
+          gsap.set(element, { autoAlpha: 0 });
         }
       });
 
-      if (lenisInstance) lenisInstance.resize();
-      ScrollTrigger.refresh();
+      if (lenisInstance) {
+        lenisInstance.resize();
+      }
+      setTimeout(() => ScrollTrigger.refresh(), 100);
     });
   });
 }
