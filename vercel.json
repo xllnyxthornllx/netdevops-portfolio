@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/tarjeta", "destination": "/tarjeta.html" },
+    { "source": "/card", "destination": "/tarjeta.html" }
+  ]
+}
