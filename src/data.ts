@@ -6,13 +6,20 @@ export interface Skill {
 
 export interface Project {
   title: string;
+  category: string;
   description: string;
   technologies: string[];
+  link?: string;
+  demoUrl?: string;
+  status: string;
+  badgeType?: 'live' | 'production' | 'active' | 'iot';
 }
 
 export interface Lab {
   title: string;
+  category: string;
   description: string;
+  technologies: string[];
 }
 
 export interface SocialLink {
@@ -23,89 +30,185 @@ export interface SocialLink {
 
 export const profileInfo = {
   name: "Uriel Aron Torres Salazar",
-  headline: "Administración de Redes y Comunicaciones | Especialista en Automatización, IoT y Desarrollo Web.",
-  about: "Especialista en formación en Administración de Redes y Comunicaciones por Tecsup. Mi enfoque se centra en la convergencia entre la infraestructura física y la programabilidad (NetDevOps). Experto en el despliegue de soluciones escalables que integran seguridad perimetral, automatización de procesos mediante Python y desarrollo de ecosistemas IoT.",
+  role: "SysAdmin & NetDevOps Specialist",
+  headline: "Administración de Redes & Comunicaciones | Especialista en NetDevOps, Cloud Infrastructure e IoT",
+  about: "Especialista en formación en Administración de Redes y Comunicaciones por Tecsup. Mi enfoque une la infraestructura de red física y virtual con la programabilidad y desarrollo de software de alto impacto (NetDevOps). Con experiencia comprobada en la administración de servidores de alta disponibilidad (NYXCORE Homelab con 17 microservicios Docker y túneles Cloudflare Zero Trust), seguridad perimetral (Fortinet SD-WAN, Cisco, Aruba, AdGuard Home), automatización avanzada en Python (Netmiko, RESTCONF) y aplicaciones web modernas de alto rendimiento.",
   education: "Tecsup (Administración de Redes y Comunicaciones)",
-  collaboration: "Alto desempeño en trabajo en equipo, elaborando reportes técnicos de alta precisión y colaborando en proyectos conjuntos de laboratorio. Miembro activo de equipos técnicos que documentan y solucionan incidentes bajo metodologías ágiles."
+  email: "torressalazarurielaron@gmail.com",
+  status: "Disponible para proyectos & retos de infraestructura",
+  collaboration: "Alto desempeño en trabajo en equipo multidisciplinario, diseño e implementación de topologías de red críticas, automatización idempotente de despliegues y resolución proactiva de incidentes bajo metodologías ágiles."
 };
 
 export const socialLinks: SocialLink[] = [
   { name: "LinkedIn", url: "https://www.linkedin.com/in/nyxthorn", icon: "in" },
-  { name: "GitHub", url: "https://github.com/xllnyxthornllx", icon: "gh" }
+  { name: "GitHub", url: "https://github.com/xllnyxthornllx", icon: "gh" },
+  { name: "Email", url: "mailto:torressalazarurielaron@gmail.com", icon: "mail" },
+  { name: "NYXCORE Cloud", url: "https://nyxcore.online", icon: "cloud" }
 ];
 
 export const skillsData: Skill[] = [
   {
-    category: "Networking",
+    category: "Networking & Seguridad",
+    icon: "📡",
     items: [
-      { name: "Cisco", detail: "Routing & Switching, despliegues de red empresariales" },
-      { name: "Fortinet", detail: "Firewalls & configuración SD-WAN, seguridad perimetral" }
-    ],
-    icon: "📡"
+      { name: "Cisco Enterprise", detail: "Routing, Switching, STP, OSPF, VLANs, Trunking y Hardening" },
+      { name: "Fortinet FortiGate", detail: "Firewalls Next-Gen, túneles IPsec, SD-WAN y políticas perimetrales" },
+      { name: "Aruba Networks", detail: "Mobility Controllers, despliegue WLAN y autenticación 802.1X / WPA3" },
+      { name: "Zero Trust & VPN", detail: "Cloudflare Tunnels, WireGuard, Tailscale Mesh y AdGuard Home DNS sinkhole" }
+    ]
   },
   {
-    category: "Automatización",
+    category: "Automatización & NetDevOps",
+    icon: "⚡",
     items: [
-      { name: "Python", detail: "Automatización de contraseñas, escaneos de red (Netmiko, RESTCONF)" },
-      { name: "Bash Scripting", detail: "Administración y orquestación en sistemas Linux" }
-    ],
-    icon: "⚡"
+      { name: "Python Network Eng.", detail: "Automatización masiva con Netmiko, Paramiko, RESTCONF y consumo de APIs" },
+      { name: "Bash & Linux Scripting", detail: "Orquestación de servicios, cron jobs de respaldo y gestión de storage LVM" },
+      { name: "Docker & Contenedores", detail: "Ecosistema de 17 contenedores, límites rotativos de logs y redes puente seguras" },
+      { name: "CI / CD & Git", detail: "Control de versiones, pipelines de validación y automatización de despliegues" }
+    ]
   },
   {
-    category: "IoT & Desarrollo",
+    category: "Sistemas & Cloud Homelab",
+    icon: "🖥️",
     items: [
-      { name: "IoT", detail: "ESP32, Arduino, protocolos MQTT, flujos en Node-RED" },
-      { name: "Web", detail: "TypeScript, consumo de REST APIs, Arquitecturas SPA" }
-    ],
-    icon: "🤖"
+      { name: "Ubuntu Server & Pro", detail: "Kernel tuning (Linux 6.x/7.x), optimización ZRAM zstd en RAM y gestión UFW" },
+      { name: "Virtualización", detail: "Topologías complejas en VMware Workstation / ESXi, WSL2 y emuladores" },
+      { name: "Observabilidad & Monitoreo", detail: "Uptime Kuma, Dozzle, Portainer, Glances y telemetría de recursos en vivo" },
+      { name: "Almacenamiento & Respaldo", detail: "Particionado GPT / SSD Kingston / LVM HDD 1.8 TB y backups automatizados" }
+    ]
   },
   {
-    category: "Herramientas Pro",
+    category: "IoT & Automatización Industrial",
+    icon: "🤖",
     items: [
-      { name: "Entornos", detail: "Linux (Ubuntu Server/Pro), VMware, WSL2" },
-      { name: "Operaciones", detail: "Git, Docker, conexiones seguras (SSH), editores (Nano)" }
-    ],
-    icon: "⚙️"
+      { name: "ESP32 & Microcontroladores", detail: "Lectura de sensores I2C/SPI, actuadores y transmisión telemétrica" },
+      { name: "Protocolos MQTT", detail: "Broker Mosquitto sobre TCP y WebSockets con cifrado y autenticación" },
+      { name: "Node-RED & SCADA", detail: "Flujos de control reactivo, automatización de riego y paneles en tiempo real" },
+      { name: "PLC Industrial", detail: "Lógica de contactos Ladder en Allen-Bradley L24ER (Studio 5000 / LogixPro)" }
+    ]
+  },
+  {
+    category: "Desarrollo Web & Frontend",
+    icon: "🚀",
+    items: [
+      { name: "TypeScript & React 18", detail: "Arquitecturas SPA, componentes modulares, hooks y tipado estricto" },
+      { name: "Tailwind CSS & Vite", detail: "Diseño UI responsivo, utilidades de rendimiento y bundlers ultrarrápidos" },
+      { name: "PWA & Offline Ready", detail: "Service Workers, IndexedDB, manifiestos móviles y cámaras QR offline" },
+      { name: "Web Audio & DSP", detail: "Procesamiento de audio digital dual-deck, Web Audio API y animación GSAP" }
+    ]
   }
 ];
 
 export const labsData: Lab[] = [
   {
-    title: "Integración SD-WAN Multi-sitio",
-    description: "Implementación de Fortigate SD-WAN con políticas de seguridad avanzadas y optimización de tráfico en arquitecturas distribuidas."
+    title: "NYXCORE — Servidor Físico Doméstico & 17 Contenedores",
+    category: "Cloud Homelab & Edge",
+    description: "Servidor Ubuntu Server 26.04 con optimización de memoria ZRAM (zstd comprimido en RAM), 17 contenedores Docker activos, túnel Cloudflare Zero Trust bajo dominio nyxcore.online y VPN WireGuard/Tailscale.",
+    technologies: ["Ubuntu Server 26.04", "Docker", "Cloudflare Zero Trust", "Tailscale", "ZRAM", "AdGuard"]
   },
   {
-    title: "Automatización de Redes con Python",
-    description: "Creación de scripts para auditoría masiva y cambios de configuración en entornos Cisco mediante Netmiko y APIs RESTCONF."
+    title: "Integración SD-WAN Multi-Sitio & Firewall Perimetral",
+    category: "Seguridad Perimetral",
+    description: "Diseño e implementación de FortiGate SD-WAN con balanceo dinámico de enlaces, políticas estrictas de firewall perimetral, optimización de tráfico y túneles IPsec seguros en entornos multisede.",
+    technologies: ["Fortinet", "FortiGate", "SD-WAN", "IPsec", "Firewall"]
   },
   {
-    title: "Gestión de Servidores Linux",
-    description: "Administración de entornos Ubuntu Server y Pro, despliegue de contenedores Docker y orquestación de servicios web integrados."
+    title: "Automatización de Redes con Python & RESTCONF",
+    category: "NetDevOps",
+    description: "Desarrollo de scripts de auditoría y configuración idempotente masiva para routers y switches Cisco. Automatización de rotación de contraseñas, telemetría y consultas programáticas con Netmiko y RESTCONF.",
+    technologies: ["Python", "Netmiko", "RESTCONF", "Cisco IOS", "Automation"]
   },
   {
-    title: "Virtualización Avanzada",
-    description: "Flujos de trabajo eficientes utilizando VMware, WSL2 y topologías de red virtualizadas de alta fidelidad."
+    title: "Controladores Inalámbricos Aruba & Seguridad WLAN",
+    category: "Infraestructura Inalámbrica",
+    description: "Configuración integral de Aruba Mobility Controllers, políticas de autenticación empresarial 802.1X / WPA3, segmentación de tráfico por VLANs y optimización de cobertura de radiofrecuencia (RF).",
+    technologies: ["Aruba", "Mobility Controller", "802.1X", "WPA3", "VLANs"]
+  },
+  {
+    title: "Supervisión Industrial & PLC Allen-Bradley",
+    category: "Automatización Industrial",
+    description: "Diseño y simulación de rutinas ladder para supervisión de procesos automatizados con controladores Allen-Bradley L24ER (Studio 5000 / LogixPro) con interbloqueos de seguridad.",
+    technologies: ["Allen-Bradley", "Rockwell L24ER", "Studio 5000", "LogixPro", "Ladder"]
+  },
+  {
+    title: "Topologías Virtualizadas de Alta Fidelidad",
+    category: "Virtualización",
+    description: "Construcción y orquestación de laboratorios complejos de redes de computadoras mediante VMware Workstation/ESXi y WSL2, simulando entornos de producción corporativos con conmutación redundante.",
+    technologies: ["VMware", "WSL2", "Linux Enterprise", "Packet Tracer", "GNS3"]
   }
 ];
 
 export const projectsData: Project[] = [
   {
-    title: "PetFeeder-IoT",
-    description: "Sistema de alimentación automatizada utilizando microcontroladores ESP32, integración de sensores y dashboards para monitoreo en tiempo real.",
-    technologies: ["ESP32", "MQTT", "Node-RED", "Sensores"]
+    title: "Cupora — Plataforma Interurbana & Aforo en Tiempo Real",
+    category: "Full-Stack PWA / React",
+    description: "Plataforma web PWA para reserva de butacas, venta en ventanilla y despacho de minivanes interurbanas en Perú. Incluye constructor interactivo de carrocerías con alineación magnética, escáner de boletos QR 100% offline con cámara, checkout con Yape/Plin y bus de sincronización reactiva BroadcastChannel.",
+    technologies: ["React 18", "TypeScript", "Tailwind CSS", "PWA", "BroadcastChannel", "QR Engine"],
+    link: "https://github.com/xllnyxthornllx/Cupora",
+    demoUrl: "https://github.com/xllnyxthornllx/Cupora",
+    status: "Producción",
+    badgeType: "production"
   },
   {
-    title: "Despliegue Multi-sitio SD-WAN",
-    description: "Diseño e integración de red segura usando políticas de firewall en Fortigate y servicios web en Ubuntu Server.",
-    technologies: ["Fortigate", "Ubuntu Server", "SD-WAN", "Networking"]
+    title: "NYXCORE — Homelab & Cluster Zero Trust",
+    category: "Infraestructura & Cloud",
+    description: "Servidor doméstico de alta resiliencia bajo dominio propio (nyxcore.online). Alberga 17 microservicios Docker, ZRAM en RAM para cuadruplicar la capacidad efectiva sin desgaste de SSD, túneles Cloudflare Zero Trust sin puertos expuestos a internet y DNS sinkhole perimetral AdGuard Home con DoH/DoT.",
+    technologies: ["Ubuntu Server 26.04", "Docker", "Cloudflare Zero Trust", "Tailscale", "ZRAM", "AdGuard Home"],
+    link: "https://nyxcore.online",
+    demoUrl: "https://nyxcore.online",
+    status: "Online (17 Contenedores)",
+    badgeType: "live"
   },
   {
-    title: "Automatización de Infraestructura",
-    description: "Desarrollo de scripts en Python para cambios de contraseñas masivas, escaneo de red y consumo de APIs RESTCONF en equipos Cisco.",
-    technologies: ["Python", "RESTCONF", "Netmiko", "Cisco"]
+    title: "NYXCORE Autonomous AI DJ 8.0 & Web Audio DSP",
+    category: "Web Audio DSP & AI",
+    description: "Sistema de streaming y mezcla autónoma con arquitectura Web Audio DSP dual-deck. Incorpora análisis armónico en tiempo real (Rueda de Camelot + BPM), 7 técnicas de transición profesional (Bass Swap, High-Pass Sweep, Vinyl Brake), visualizador 3D reactivo a 60 FPS y locuciones neuronales con IA DJ Elvira.",
+    technologies: ["Web Audio API", "DSP Dual-Deck", "TypeScript", "Docker", "Neural TTS", "Camelot Wheel"],
+    link: "https://iot.nyxcore.online/dj/",
+    demoUrl: "https://iot.nyxcore.online/dj/",
+    status: "Live DSP",
+    badgeType: "live"
+  },
+  {
+    title: "PetFeeder-IoT & Invernadero Inteligente (SCADA)",
+    category: "IoT & Telemetría",
+    description: "Sistema de dispensación automatizada y telemetría ambiental para agricultura/invernaderos con microcontroladores ESP32, broker MQTT Mosquitto sobre TCP y WebSockets, motor de automatización reactiva en Node-RED y visualización en tiempo real.",
+    technologies: ["ESP32", "MQTT / Mosquitto", "Node-RED", "Sensores I2C", "WebSockets"],
+    link: "https://github.com/xllnyxthornllx/Aethermqtt-web",
+    demoUrl: "https://github.com/xllnyxthornllx/Aethermqtt-web",
+    status: "Online",
+    badgeType: "iot"
+  },
+  {
+    title: "Automatización de Infraestructura & NetDevOps Pipeline",
+    category: "NetDevOps & Python",
+    description: "Suite programable en Python para auditoría masiva de configuraciones de red, cambio seguro de contraseñas de switches y routers Cisco mediante Netmiko, telemetría y aprovisionamiento dinámico con APIs RESTCONF y pipelines de validación CI.",
+    technologies: ["Python", "RESTCONF", "Netmiko", "Cisco IOS", "Fortinet", "CI/CD"],
+    link: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
+    demoUrl: "https://github.com/xllnyxthornllx/topologia_lab7-CI",
+    status: "Activo",
+    badgeType: "active"
   }
 ];
 
 export const toolsMarquee = [
-  "Cisco", "Fortinet", "Python", "Bash", "ESP32", "MQTT", "Node-RED", "TypeScript", "Ubuntu Server", "Docker", "VMware", "Git", "RESTCONF"
+  "Cisco Enterprise",
+  "Fortinet SD-WAN",
+  "Python NetDevOps",
+  "Docker Containers",
+  "Cloudflare Zero Trust",
+  "Tailscale WireGuard",
+  "Ubuntu Server 26.04",
+  "TypeScript",
+  "React 18",
+  "ESP32 IoT",
+  "MQTT Mosquitto",
+  "Node-RED SCADA",
+  "Netmiko Automation",
+  "RESTCONF APIs",
+  "Aruba Wireless",
+  "Allen-Bradley PLC",
+  "ZRAM Kernel Tuning",
+  "AdGuard Home DNS",
+  "Git & GitHub CI"
 ];
